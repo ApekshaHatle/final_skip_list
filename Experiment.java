@@ -1,5 +1,3 @@
-// Compares the 3 versions on the same searches. Prints a simple table.
-// Usage: java Experiment [firstSeed] [seedCount] [halfLife]
 public class Experiment {
     static final int N = 100000;
 
@@ -12,12 +10,10 @@ public class Experiment {
         return list;
     }
 
-    // returns {average hops, tower changes per 1000 searches}
     static double[] run(SkipList list, int[] searches) {
         return run(list, searches, null);
     }
 
-    // blocks (optional): average hops for every block of 1,000,000 searches
     static double[] run(SkipList list, int[] searches, double[] blocks) {
         long total = 0, blockSum = 0;
         for (int i = 0; i < searches.length; i++) {
@@ -47,7 +43,7 @@ public class Experiment {
         System.out.println();
         System.out.printf("%-15s %9s %9s %9s | %13s %13s%n", "Workload", "Baseline", "Counter", "Aging",
                 "Aging vs Base", "Aging vs Cnt");
-        double[][] blockAvg = new double[3][4];     // for the shifting 99-1 table
+        double[][] blockAvg = new double[3][4];    
         System.out.println("---------------------------------------------------------------------------------");
 
         for (int w = 0; w < names.length; w++) {

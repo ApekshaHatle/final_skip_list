@@ -1,7 +1,5 @@
 import java.util.Random;
 
-// Shows the real skip list (every level, every element) for the 3 versions on a tiny list.
-// Usage: java Demo
 public class Demo {
     static final int N = 16;            // keys 1..16
 
@@ -46,7 +44,6 @@ public class Demo {
         System.out.printf("  Baseline %.1f    Counter %.1f    Counter+Aging %.1f%n", hops[0] / count, hops[1] / count, hops[2] / count);
     }
 
-    // Prints the skip list three ways: a picture of the towers, the chain on each level, and a table.
     static void show(SkipList list, String title, String moment) {
         System.out.println("\n==================================================================");
         System.out.println(title + "   (" + moment + ")");
@@ -67,7 +64,6 @@ public class Demo {
         for (Node x = list.head.next[0]; x != null; x = x.next[0]) keys.append(String.format("%4d", x.key));
         System.out.println(keys);
 
-        // 2. the actual linked chain on every level
         System.out.println("\nChain on each level (what the pointers really look like):");
         for (int lvl = list.level; lvl >= 1; lvl--) {
             StringBuilder sb = new StringBuilder(String.format("Level %2d: HEAD", lvl));
@@ -76,7 +72,6 @@ public class Demo {
             System.out.println(sb);
         }
 
-        // 3. table of elements
         if (list instanceof CounterSkipList || list instanceof AgingSkipList) {
             String hitsName = (list instanceof AgingSkipList) ? "recent hits (old ones fade)" : "hits so far";
             System.out.println("\nKey | random height | current height | " + hitsName);

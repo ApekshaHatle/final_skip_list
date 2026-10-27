@@ -1,11 +1,7 @@
 import java.util.Random;
 
-// Makes the list of keys that will be searched.
 public class Workloads {
 
-    // name: "uniform", "hot90_10", "hot99_1", "zipf", "shift99_1", ...
-    // hotX_Y  = X% of searches go to Y% of the keys
-    // shiftX_Y = same, but the popular keys change every 'shiftEvery' searches
     static int[] make(String name, int n, int m, long seed, int shiftEvery) {
         Random r = new Random(seed);
         int[] perm = new int[n];

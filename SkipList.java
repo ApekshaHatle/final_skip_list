@@ -1,6 +1,6 @@
 import java.util.Random;
 
-// VERSION 1: BASELINE. An ordinary skip list. Heights are random and never change.
+// VERSION 1: BASELINE
 public class SkipList {
     static final int MAX_LEVEL = 20;
     static final int EXTRA = 2;     // extra levels given to popular keys (chosen on seeds 1-2)
@@ -17,7 +17,6 @@ public class SkipList {
         rand = new Random(seed);
     }
 
-    // coin flip: 50% height 1, 25% height 2, 12.5% height 3, ...
     int randomHeight() {
         int h = 1;
         while (h < MAX_LEVEL && rand.nextBoolean()) h++;
@@ -42,8 +41,6 @@ public class SkipList {
         size++;
     }
 
-    // Search from the top level. Every step right or down is one "hop".
-    // Stops early as soon as the key is found (so tall keys are found faster).
     Node search(int key) {
         int hops = 0;
         Node x = head;
@@ -64,16 +61,11 @@ public class SkipList {
         return null;
     }
 
-    // Searches for a key and returns the number of hops. Baseline does nothing else.
     int access(int key) {
         search(key);
         return lastHops;
     }
 
-    // x = how many times more popular than an average key.
-    // A popular key keeps its random height and gets "boost" levels ON TOP of it,
-    // where boost = log2(x) + EXTRA. So the popular keys still form a nice
-    // skip list among themselves (not all on the same flat level).
     int heightFor(Node u, double x) {
         int boost = (int) (Math.log(x) / Math.log(2)) + EXTRA;
         int t = u.baseHeight + boost;
@@ -81,7 +73,6 @@ public class SkipList {
         return t;
     }
 
-    // Make the tower of node u taller (uses the 'update' array from the last search).
     void promote(Node u, int target) {
         while (u.height < target) {
             int i = u.height;
@@ -96,7 +87,6 @@ public class SkipList {
         }
     }
 
-    // Make the tower of node v shorter (finds its neighbours again).
     void demote(Node v, int target) {
         Node[] up = new Node[MAX_LEVEL];
         Node x = head;
@@ -113,7 +103,6 @@ public class SkipList {
         while (level > 1 && head.next[level - 1] == null) level--;
     }
 
-    // Checks the list is sorted on every level and every tower is complete.
     boolean check() {
         for (int i = 0; i < MAX_LEVEL; i++) {
             Node x = head.next[i];

@@ -1,19 +1,16 @@
-// VERSION 2: COUNTER. Every search adds 1 to the key's counter.
-// Popular keys get taller towers. Nothing is ever forgotten (no aging).
+// VERSION 2: COUNTER
 public class CounterSkipList extends SkipList {
-    static final int MIN_COUNT = 4;      // a key needs at least 4 hits before it can grow
-    double total = 0;                    // total number of searches counted
+    static final int MIN_COUNT = 4;      
+    double total = 0;                    
 
     CounterSkipList(long seed) {
         super(seed);
     }
 
-    // Height this key "deserves": a key that is 2^k times more popular than an
-    // average key gets about k extra levels.
     int targetHeight(Node u) {
         if (u.count < MIN_COUNT) return u.baseHeight;
         double fairShare = total / size;
-        double x = u.count / fairShare;              // how many times more popular than average
+        double x = u.count / fairShare;              
         if (x < 1) return u.baseHeight;
         return heightFor(u, x);
     }

@@ -1,11 +1,11 @@
-// One element (key) of the skip list.
+
 public class Node {
     int key;
-    int baseHeight;     // height given at insert time (random coin flips)
-    int height;         // current height (can grow when the key is popular)
-    double count;       // how popular this key is (used by the counter versions)
-    boolean inTall;     // true if this key is currently taller than its base height
-    Node[] next;        // next[i] = next node on level i
+    int baseHeight;     
+    int height;         
+    double count;       
+    boolean inTall;     
+    Node[] next;        
 
     Node(int key, int height, int maxLevel) {
         this.key = key;
