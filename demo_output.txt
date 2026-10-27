@@ -1,0 +1,248 @@
+A skip list with keys 1 to 16. Same random starting heights for all 3 versions.
+
+==================================================================
+1. BASELINE (plain skip list)   (start)
+==================================================================
+Towers  ( o = normal tower,  # = tower made taller because the key is popular )
+Level  5     .   .   .   o   .   .   .   .   .   o   .   .   .   .   .   .
+Level  4     o   .   .   o   .   .   .   .   .   o   .   .   o   .   o   .
+Level  3     o   .   .   o   .   .   o   o   .   o   .   .   o   .   o   .
+Level  2     o   .   .   o   o   .   o   o   o   o   o   o   o   o   o   o
+Level  1     o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+Key          1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+
+Chain on each level (what the pointers really look like):
+Level  5: HEAD -> 4 -> 10 -> null
+Level  4: HEAD -> 1 -> 4 -> 10 -> 13 -> 15 -> null
+Level  3: HEAD -> 1 -> 4 -> 7 -> 8 -> 10 -> 13 -> 15 -> null
+Level  2: HEAD -> 1 -> 4 -> 5 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+Level  1: HEAD -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+
+Key | height (never changes)
+  1 |  4
+  2 |  1
+  3 |  1
+  4 |  5
+  5 |  2
+  6 |  1
+  7 |  3
+  8 |  3
+  9 |  2
+ 10 |  5
+ 11 |  2
+ 12 |  2
+ 13 |  4
+ 14 |  2
+ 15 |  4
+ 16 |  2
+
+
+############ PHASE 1: 600 searches, keys 5 and 12 get 90% of them ############
+
+==================================================================
+1. BASELINE (plain skip list)   (after phase 1)
+==================================================================
+Towers  ( o = normal tower,  # = tower made taller because the key is popular )
+Level  5     .   .   .   o   .   .   .   .   .   o   .   .   .   .   .   .
+Level  4     o   .   .   o   .   .   .   .   .   o   .   .   o   .   o   .
+Level  3     o   .   .   o   .   .   o   o   .   o   .   .   o   .   o   .
+Level  2     o   .   .   o   o   .   o   o   o   o   o   o   o   o   o   o
+Level  1     o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+Key          1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+
+Chain on each level (what the pointers really look like):
+Level  5: HEAD -> 4 -> 10 -> null
+Level  4: HEAD -> 1 -> 4 -> 10 -> 13 -> 15 -> null
+Level  3: HEAD -> 1 -> 4 -> 7 -> 8 -> 10 -> 13 -> 15 -> null
+Level  2: HEAD -> 1 -> 4 -> 5 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+Level  1: HEAD -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+
+Key | height (never changes)
+  1 |  4
+  2 |  1
+  3 |  1
+  4 |  5
+  5 |  2
+  6 |  1
+  7 |  3
+  8 |  3
+  9 |  2
+ 10 |  5
+ 11 |  2
+ 12 |  2
+ 13 |  4
+ 14 |  2
+ 15 |  4
+ 16 |  2
+
+==================================================================
+2. COUNTER   (after phase 1)
+==================================================================
+Towers  ( o = normal tower,  # = tower made taller because the key is popular )
+Level  7     .   .   .   .   #   .   .   .   .   .   .   #   .   .   .   .
+Level  6     .   .   .   .   #   .   .   .   .   .   .   #   .   .   .   .
+Level  5     .   .   .   o   #   .   .   .   .   o   .   #   .   .   .   .
+Level  4     o   .   .   o   #   .   .   .   .   o   .   #   o   .   o   .
+Level  3     o   .   .   o   #   .   o   o   .   o   .   #   o   .   o   .
+Level  2     o   .   .   o   o   .   o   o   o   o   o   o   o   o   o   o
+Level  1     o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+Key          1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+
+Chain on each level (what the pointers really look like):
+Level  7: HEAD -> 5 -> 12 -> null
+Level  6: HEAD -> 5 -> 12 -> null
+Level  5: HEAD -> 4 -> 5 -> 10 -> 12 -> null
+Level  4: HEAD -> 1 -> 4 -> 5 -> 10 -> 12 -> 13 -> 15 -> null
+Level  3: HEAD -> 1 -> 4 -> 5 -> 7 -> 8 -> 10 -> 12 -> 13 -> 15 -> null
+Level  2: HEAD -> 1 -> 4 -> 5 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+Level  1: HEAD -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+
+Key | random height | current height | hits so far
+  1 |        4      |        4       |      1.0
+  2 |        1      |        1       |      2.0
+  3 |        1      |        1       |      3.0
+  4 |        5      |        5       |      9.0
+  5 |        2      |        7       |    293.0  <-- raised
+  6 |        1      |        1       |      3.0
+  7 |        3      |        3       |      3.0
+  8 |        3      |        3       |      3.0
+  9 |        2      |        2       |      5.0
+ 10 |        5      |        5       |      4.0
+ 11 |        2      |        2       |      2.0
+ 12 |        2      |        7       |    260.0  <-- raised
+ 13 |        4      |        4       |      3.0
+ 14 |        2      |        2       |      1.0
+ 15 |        4      |        4       |      4.0
+ 16 |        2      |        2       |      4.0
+
+==================================================================
+3. COUNTER + OUR AGING   (after phase 1)
+==================================================================
+Towers  ( o = normal tower,  # = tower made taller because the key is popular )
+Level  7     .   .   .   .   #   .   .   .   .   .   .   #   .   .   .   .
+Level  6     .   .   .   .   #   .   .   .   .   .   .   #   .   .   .   .
+Level  5     .   .   .   o   #   .   .   .   .   o   .   #   .   .   .   .
+Level  4     o   .   .   o   #   .   .   .   .   o   .   #   o   .   o   .
+Level  3     o   .   .   o   #   .   o   o   .   o   .   #   o   .   o   .
+Level  2     o   .   .   o   o   .   o   o   o   o   o   o   o   o   o   o
+Level  1     o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+Key          1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+
+Chain on each level (what the pointers really look like):
+Level  7: HEAD -> 5 -> 12 -> null
+Level  6: HEAD -> 5 -> 12 -> null
+Level  5: HEAD -> 4 -> 5 -> 10 -> 12 -> null
+Level  4: HEAD -> 1 -> 4 -> 5 -> 10 -> 12 -> 13 -> 15 -> null
+Level  3: HEAD -> 1 -> 4 -> 5 -> 7 -> 8 -> 10 -> 12 -> 13 -> 15 -> null
+Level  2: HEAD -> 1 -> 4 -> 5 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+Level  1: HEAD -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+
+Key | random height | current height | recent hits (old ones fade)
+  1 |        4      |        4       |      0.6
+  2 |        1      |        1       |      0.5
+  3 |        1      |        1       |      1.0
+  4 |        5      |        5       |      4.4
+  5 |        2      |        7       |     98.9  <-- raised
+  6 |        1      |        1       |      1.1
+  7 |        3      |        3       |      0.7
+  8 |        3      |        3       |      1.0
+  9 |        2      |        2       |      1.5
+ 10 |        5      |        5       |      1.4
+ 11 |        2      |        2       |      0.7
+ 12 |        2      |        7       |     86.5  <-- raised
+ 13 |        4      |        4       |      0.9
+ 14 |        2      |        2       |      0.1
+ 15 |        4      |        4       |      2.5
+ 16 |        2      |        2       |      1.6
+
+Average hops per search in this phase:
+  Baseline 5.8    Counter 1.9    Counter+Aging 1.9
+
+
+############ PHASE 2: 1500 more searches, now keys 2 and 14 are popular ############
+
+==================================================================
+2. COUNTER   (after phase 2)
+==================================================================
+Towers  ( o = normal tower,  # = tower made taller because the key is popular )
+Level  7     .   .   .   .   #   .   .   .   .   .   .   #   .   .   .   .
+Level  6     .   .   .   .   #   .   .   .   .   .   .   #   .   #   .   .
+Level  5     .   #   .   o   #   .   .   .   .   o   .   #   .   #   .   .
+Level  4     o   #   .   o   #   .   .   .   .   o   .   #   o   #   o   .
+Level  3     o   #   .   o   #   .   o   o   .   o   .   #   o   #   o   .
+Level  2     o   #   .   o   o   .   o   o   o   o   o   o   o   o   o   o
+Level  1     o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+Key          1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+
+Chain on each level (what the pointers really look like):
+Level  7: HEAD -> 5 -> 12 -> null
+Level  6: HEAD -> 5 -> 12 -> 14 -> null
+Level  5: HEAD -> 2 -> 4 -> 5 -> 10 -> 12 -> 14 -> null
+Level  4: HEAD -> 1 -> 2 -> 4 -> 5 -> 10 -> 12 -> 13 -> 14 -> 15 -> null
+Level  3: HEAD -> 1 -> 2 -> 4 -> 5 -> 7 -> 8 -> 10 -> 12 -> 13 -> 14 -> 15 -> null
+Level  2: HEAD -> 1 -> 2 -> 4 -> 5 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+Level  1: HEAD -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+
+Key | random height | current height | hits so far
+  1 |        4      |        4       |      9.0
+  2 |        1      |        5       |    690.0  <-- raised
+  3 |        1      |        1       |     14.0
+  4 |        5      |        5       |     20.0
+  5 |        2      |        7       |    304.0  <-- raised
+  6 |        1      |        1       |     10.0
+  7 |        3      |        3       |      6.0
+  8 |        3      |        3       |     11.0
+  9 |        2      |        2       |     14.0
+ 10 |        5      |        5       |     13.0
+ 11 |        2      |        2       |      6.0
+ 12 |        2      |        7       |    270.0  <-- raised
+ 13 |        4      |        4       |     14.0
+ 14 |        2      |        6       |    697.0  <-- raised
+ 15 |        4      |        4       |     13.0
+ 16 |        2      |        2       |      9.0
+
+==================================================================
+3. COUNTER + OUR AGING   (after phase 2)
+==================================================================
+Towers  ( o = normal tower,  # = tower made taller because the key is popular )
+Level  7     .   .   .   .   .   .   .   .   .   .   .   .   .   #   .   .
+Level  6     .   .   .   .   .   .   .   .   .   .   .   .   .   #   .   .
+Level  5     .   #   .   o   .   .   .   .   .   o   .   .   .   #   .   .
+Level  4     o   #   .   o   .   .   .   .   .   o   .   .   o   #   o   .
+Level  3     o   #   .   o   .   .   o   o   .   o   .   .   o   #   o   .
+Level  2     o   #   .   o   o   .   o   o   o   o   o   o   o   o   o   o
+Level  1     o   o   o   o   o   o   o   o   o   o   o   o   o   o   o   o
+Key          1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+
+Chain on each level (what the pointers really look like):
+Level  7: HEAD -> 14 -> null
+Level  6: HEAD -> 14 -> null
+Level  5: HEAD -> 2 -> 4 -> 10 -> 14 -> null
+Level  4: HEAD -> 1 -> 2 -> 4 -> 10 -> 13 -> 14 -> 15 -> null
+Level  3: HEAD -> 1 -> 2 -> 4 -> 7 -> 8 -> 10 -> 13 -> 14 -> 15 -> null
+Level  2: HEAD -> 1 -> 2 -> 4 -> 5 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+Level  1: HEAD -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> null
+
+Key | random height | current height | recent hits (old ones fade)
+  1 |        4      |        4       |      2.0
+  2 |        1      |        5       |    101.3  <-- raised
+  3 |        1      |        1       |      1.8
+  4 |        5      |        5       |      1.2
+  5 |        2      |        2       |      1.3
+  6 |        1      |        1       |      0.7
+  7 |        3      |        3       |      0.8
+  8 |        3      |        3       |      1.4
+  9 |        2      |        2       |      0.6
+ 10 |        5      |        5       |      2.6
+ 11 |        2      |        2       |      0.4
+ 12 |        2      |        2       |      2.5
+ 13 |        4      |        4       |      0.7
+ 14 |        2      |        7       |     97.6  <-- raised
+ 15 |        4      |        4       |      0.9
+ 16 |        2      |        2       |      0.9
+
+Average hops per search in this phase:
+  Baseline 6.4    Counter 4.6    Counter+Aging 2.5
+
+Look at keys 5 and 12 in version 2: they keep their tall towers forever.
+In version 3 the aging cut them down and gave the new popular keys (2 and 14) tall towers.
